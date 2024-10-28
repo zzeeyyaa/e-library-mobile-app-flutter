@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  gap: ^3.0.1
   get: ^4.6.6
   get_storage: ^2.1.1
   sqflite: ^2.4.0
