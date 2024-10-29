@@ -12,7 +12,7 @@ class DatabaseHelper {
   Future<void> initializeDatabase() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final path = join(directory.path, 'yndt.db');
+      final path = join(directory.path, 'elib.db');
 
       _database = await openDatabase(
         path,
@@ -45,16 +45,6 @@ class DatabaseHelper {
     } catch (e) {
       print('Error fetching data: $e');
       await initializeDatabase();
-      return [];
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> getGuestData() async {
-    try {
-      final result = await _database.query('guests');
-      return result;
-    } catch (e) {
-      print('Error fetching guest data: $e');
       return [];
     }
   }
@@ -104,33 +94,6 @@ class DatabaseHelper {
     }
   }
 
-  Future<bool> checkDataCharity(int id) async {
-    try {
-      final now = DateTime.now();
-      final todayStart =
-          DateTime(now.year, now.month, now.day).toIso8601String();
-      final tomorrowStart =
-          DateTime(now.year, now.month, now.day + 1).toIso8601String();
-
-      final result = await _database.query(
-        'charity_recipient',
-        where: 'id_patient = ? AND created_at >= ? AND created_at < ?',
-        whereArgs: [id, todayStart, tomorrowStart],
-      );
-
-      if (result.isNotEmpty) {
-        print('Data exists for today.');
-        return false;
-      } else {
-        print('No data for today.');
-        return true;
-      }
-    } catch (e) {
-      print('Error checking charity: $e');
-      return true;
-    }
-  }
-
   Future<int> updateField(
     String table,
     String field,
@@ -150,15 +113,6 @@ class DatabaseHelper {
     } catch (e) {
       print('Error updating field: $e');
       return 0;
-    }
-  }
-
-  Future<void> deleteAllCharityRecipients() async {
-    try {
-      await _database.delete('charity_recipient');
-      print('All data from charity_recipient table deleted successfully');
-    } catch (e) {
-      print('Error deleting data: $e');
     }
   }
 
@@ -237,23 +191,6 @@ class DatabaseHelper {
       print(data);
     } catch (e) {
       print('Error updating data: $e');
-    }
-  }
-
-  Future<int> createGuest(String table, Map<String, dynamic> data) async {
-    try {
-      final exists = await _dataExists(table, data);
-      if (!exists) {
-        final result = await _database.insert(table, data);
-        print('Data created successfully');
-        return result;
-      } else {
-        print('Data already exists, skipping creation.');
-        return 0;
-      }
-    } catch (e) {
-      print('Error creating data: $e');
-      return 0;
     }
   }
 

@@ -1,30 +1,24 @@
 import 'package:e_library/app.dart';
 import 'package:e_library/bootstrap.dart';
 import 'package:e_library/core/database/db_helper.dart';
+import 'package:e_library/core/utils/storage_utils.dart';
+import 'package:e_library/src/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  BoxUtils.init();
+  _initializeDatabase();
+  _registerController();
   bootstrap(() => const App());
 }
 
-Future<void> initializeDatabase() async {
+Future<void> _initializeDatabase() async {
   const databaseHelper = DatabaseHelper();
   await databaseHelper.initializeDatabase();
 }
 
-
-// class MainApp extends StatelessWidget {
-//   const MainApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       home: Scaffold(
-//         body: Center(
-//           child: Text('Hello World!'),
-//         ),
-//       ),
-//     );
-//   }
-// }
+void _registerController() {
+  Get.put(AuthController());
+}

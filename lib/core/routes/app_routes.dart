@@ -1,3 +1,4 @@
+import 'package:e_library/core/middleware/auth_middleware.dart';
 import 'package:e_library/src/auth/view/login_view.dart';
 import 'package:e_library/src/auth/view/regist_view.dart';
 import 'package:e_library/src/home/view/home_view.dart';
@@ -11,7 +12,7 @@ class AppRoutes {
   static const String profile = '/profile';
 
   static final List<GetPage> routes = [
-    _buildPageRoute(home),
+    _buildPageRoute(home, middlewares: [AuthMiddleware()]),
     _buildPageRoute(login),
     _buildPageRoute(register),
     _buildPageRoute(profile),
